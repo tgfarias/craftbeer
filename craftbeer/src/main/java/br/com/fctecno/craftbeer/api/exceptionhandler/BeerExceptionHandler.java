@@ -29,7 +29,7 @@ public class BeerExceptionHandler extends ResponseEntityExceptionHandler {
 	
 	@ExceptionHandler(NaoEncontradaException.class)
 	public ResponseEntity<Object> handleNaoEncontrada(ValidacaoException ex, WebRequest request) {
-		HttpStatus status = HttpStatus.BAD_REQUEST;
+		HttpStatus status = HttpStatus.NOT_FOUND;
 		
 		Falha erro = new Falha();
 		erro.setStatus(status.value());

@@ -24,6 +24,10 @@ public class Beer {
 	private String name;
 	
 	@NotBlank
+	@Size(max = 255)
+	private String ingredients;
+	
+	@NotBlank
 	@Column(name = "alcohol_content")
 	@Size(max = 100)
 	private String alcoholContent;
@@ -49,6 +53,14 @@ public class Beer {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public String getIngredients() {
+		return ingredients;
+	}
+
+	public void setIngredients(String ingredients) {
+		this.ingredients = ingredients;
 	}
 
 	public String getAlcoholContent() {
