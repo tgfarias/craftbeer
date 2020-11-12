@@ -88,7 +88,6 @@ INDEX VERSION 1.131+C:\projetos\craftbeer-test\.metadata\.plugins\org.eclipse.jd
 1183897030.index
 3870977039.index
 88103802.index
-1303736724.index
 3879575442.index
 3129614575.index
 661087513.index
