@@ -1,0 +1,37 @@
+package br.com.fctecno.craftbeer.api.controller;
+
+import java.util.List;
+
+import javax.validation.Valid;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.http.HttpStatus;
+
+import br.com.fctecno.craftbeer.api.model.Beer;
+import br.com.fctecno.craftbeer.domain.repository.BeerRepository;
+import io.swagger.v3.oas.annotations.parameters.RequestBody;
+
+@RestController
+@RequestMapping("/beer")
+public class BeerController {
+	
+	@Autowired
+	private BeerRepository beerRepository;
+	
+	@GetMapping
+	public List<Beer> listar() {
+		return beerRepository.findAll();
+	}
+	
+	@PostMapping
+	@ResponseStatus(HttpStatus.CREATED)
+	public Beer adicionar(@Valid @RequestBody Beer beer ) {
+		return beerRepository.save(beer);
+	}
+
+}

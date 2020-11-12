@@ -1,0 +1,43 @@
+package br.com.fctecno.craftbeer.domain.model;
+
+import java.math.BigDecimal;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
+import javax.validation.constraints.NotBlank;
+
+@Entity
+public class Beer {
+	
+	/*
+	 * name:
+        type: "string"
+      ingredients:
+        type: "string"
+      alcoholContent:
+        type: "string"
+      price:
+        type: "number"
+      category:
+        type: "string"
+	 * */
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Integer id;
+	
+	private String name;
+	
+	@NotBlank
+	private String alcoholContent;
+	
+	@NotNull
+	private BigDecimal price;
+	
+	private String category;
+	
+	
+	
+}

@@ -1,0 +1,5 @@
+package br.com.fctecno.craftbeer.domain.repository;
+
+public class BeerRepository {
+
+}
