@@ -1,5 +1,0 @@
-package br.com.fctecno.craftbeer.api.controller;
-
-public class BeerController {
-
-}

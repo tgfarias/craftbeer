@@ -1,5 +1,0 @@
-package br.com.fctecno.craftbeer.domain.exception;
-
-public class NaoEncontradaException {
-
-}
