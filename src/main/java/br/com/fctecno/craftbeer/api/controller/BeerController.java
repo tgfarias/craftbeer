@@ -83,9 +83,7 @@ public class BeerController {
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> remover(@PathVariable Long id) {
 		
-		if(!beerRepository.existsById(id)) {
-			return ResponseEntity.notFound().build();
-		}		
+		beerRepository.findById(id).orElseThrow(() -> new NaoEncontradaException("Cerveja não encontrada."));
 		
 		beerRepository.deleteById(id);
 		

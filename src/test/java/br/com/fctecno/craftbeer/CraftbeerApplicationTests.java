@@ -1,10 +1,10 @@
 package br.com.fctecno.craftbeer;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 
+import java.awt.print.Book;
 import java.math.BigDecimal;
-import java.util.Random;
+import java.util.Optional;
 
 import org.junit.Before;
 import org.junit.jupiter.api.Test;
@@ -15,6 +15,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -30,7 +31,9 @@ import br.com.fctecno.craftbeer.domain.repository.BeerRepository;
 @SpringBootTest
 @AutoConfigureMockMvc
 class CraftbeerApplicationTests {
-
+	
+	private Beer beer;
+	
 	@Autowired
 	private BeerRepository repo;
 	
@@ -68,26 +71,55 @@ class CraftbeerApplicationTests {
 	
 	@Test
 	public void testPostBeerController() throws Exception {
-		Beer b = new Beer();
-		b.setName("Heineken");
-		b.setCategory("Premium");
-		b.setIngredients("Água, lúpulo e malte");
-		b.setPrice(new BigDecimal(15.00));
-		b.setAlcoholContent("5.0% vol.");
-
-        mockMvc.perform(
+		beer = new Beer();
+		beer.setName("Heineken");
+		beer.setCategory("Premium");
+		beer.setIngredients("Água, lúpulo e malte");
+		beer.setPrice(new BigDecimal(15.00));
+		beer.setAlcoholContent("5.0% vol.");
+		
+		MvcResult resultPost = mockMvc.perform(
         		MockMvcRequestBuilders.post("/beers")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(asJsonString(b)))
-                .andExpect(MockMvcResultMatchers.status().isCreated());
+                        .content(asJsonString(beer)))
+				.andExpect(MockMvcResultMatchers.status().isCreated())
+                .andReturn();
+		
+		
+		Beer b = new ObjectMapper().readValue(resultPost.getResponse().getContentAsString(), Beer.class);
+		beer.setId(b.getId());
+	}
+	
+	@Test
+	public void testPutBeerController() throws Exception {
+		
+		Optional<Beer> beerFind = repo.findById((long) 20);
+		
+		if (beerFind.isPresent()) {
+			Beer beer = beerFind.get();
+			beer.setCategory("Pilsen");
+			beer.setAlcoholContent("Água, cerais diversos, malte");
+			mockMvc.perform(
+					MockMvcRequestBuilders.put("/beers/{id}", beer.getId())
+		                    .contentType(MediaType.APPLICATION_JSON)
+		                    .content(asJsonString(beer)))
+		            .andExpect(MockMvcResultMatchers.status().isOk());
+		}
 	}
 	
 	@Test
 	public void testDeleteBeerController() throws Exception {
+		mockMvc.perform(
+	    		MockMvcRequestBuilders.delete("/beers/{id}", 20))
+	            .andExpect(MockMvcResultMatchers.status().isNoContent());
 	    
-	    mockMvc.perform(
-	    		MockMvcRequestBuilders.delete("/users/{id}", 9))
-	            .andExpect(MockMvcResultMatchers.status().isOk());
+	}
+	
+	@Test
+	public void testDeleteNotFoundBeerController() throws Exception {
+		mockMvc.perform(
+	    		MockMvcRequestBuilders.delete("/beers/{id}", 200))
+	            .andExpect(MockMvcResultMatchers.status().isNotFound());
 	    
 	}
 	
